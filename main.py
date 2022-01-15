@@ -26,4 +26,4 @@ if __name__ == "__main__":
     intents.members = True
     bot = DiscordBot(command_prefix="T9$", intents=intents, help_command=None)
     bot.add_cog(Commands(bot))
-    bot.run("OTI3NTE3NTA4Mzc2ODgzMjAw.YdLX_g._uQ9nXRE3vRyZ5vMcfexKgYTVGg")
+    bot.run("TOEKN")
