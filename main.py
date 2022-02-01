@@ -1,5 +1,6 @@
 from discord import Intents
 from discord.ext.commands import Bot, Cog, CommandNotFound, MissingPermissions
+import config
 import requests
 import datetime
 
@@ -21,9 +22,11 @@ class DiscordBot(Bot):
             await ctx.reply('MissingPermission!', mention_author=False)
 
 
+
+
 if __name__ == "__main__":
     intents = Intents.default()
     intents.members = True
     bot = DiscordBot(command_prefix="T9$", intents=intents, help_command=None)
     bot.add_cog(Commands(bot))
-    bot.run("TOEKN")
+    bot.run(config.TOKEN)
