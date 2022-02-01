@@ -1,3 +1,2 @@
 # T9-BOT
-
-Soon..
+Discord: https://discord.gg/m9BTEUuSHr
