@@ -1,6 +1,6 @@
 from logging import exception
 from time import sleep
-
+import config
 from discord import Game, Embed, Role, Colour, Member
 from discord.utils import get
 from discord.ext.commands import Cog, command, has_permissions, MissingPermissions
@@ -9,30 +9,12 @@ from numexpr import evaluate
 from discord.ext import commands
 import requests
 import datetime
-perfix = "T9$"
+perfix = config.PERFIX
 bypass_id = [752847699535069184]
 class Commands(Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "✅"]
-        self.roles = None
-        self.channel_id = 919552512879644684
-
-    def check_if_roles_are_built(self):
-        if self.roles is None:
-            roles = self.bot.guilds[0].roles
-            self.roles = [
-                get(roles, name="Back-End"),
-                get(roles, name="Front-End"),
-                get(roles, name="C++"),
-                get(roles, name="Java"),
-                get(roles, name="C"),
-                get(roles, name="js"),
-                get(roles, name="Python"),
-                get(roles, name="Flutter"),
-                get(roles, name="Helper")
-            ]
 
     @Cog.listener()
     async def on_ready(self):
@@ -211,98 +193,6 @@ class Commands(Cog):
                         print(f"Deleted {role}")
                         await member.remove_roles(role)
 
-    @command(name='generate_auto_role_message', help='Generates auto roles message')
-    @has_permissions(manage_roles=True)
-    async def generate_verification(self, ctx):
-        embed = Embed(title="Click reaction",
-                      description="1️⃣ to take Back-End role\n 2️⃣ to take Front-End role\n 3️⃣ to take C++ "
-                                  "role\n 4️⃣ to take Java role\n 5️⃣ to take C role\n 6️⃣ to take js role\n 7️⃣ "
-                                  "to take Python role\n 8️⃣ to take Flutter role\n 9️⃣ to take Helper role\n✅ "
-                                  "Delete all roles\n")
-        message = await ctx.send(embed=embed)
-
-        for emoji in self.emojis:
-            await message.add_reaction(emoji)
-
-    @Cog.listener()
-    async def on_raw_reaction_add(self, payload):
-        if payload.channel_id != self.channel_id:
-            return None
-        elif payload.member.bot:
-            return None
-
-        self.check_if_roles_are_built()
-        emoji = payload.emoji
-
-        if emoji.name == "1️⃣":
-            await payload.member.add_roles(self.roles[0], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "2️⃣":
-            await payload.member.add_roles(self.roles[1], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "3️⃣":
-            await payload.member.add_roles(self.roles[2], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "4️⃣":
-            await payload.member.add_roles(self.roles[3], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "5️⃣":
-            await payload.member.add_roles(self.roles[4], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "6️⃣":
-            await payload.member.add_roles(self.roles[5], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "7️⃣":
-            await payload.member.add_roles(self.roles[6], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "8️⃣":
-            await payload.member.add_roles(self.roles[7], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "9️⃣":
-            await payload.member.add_roles(self.roles[8], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "✅":
-            for role in self.roles:
-                if role in payload.member.roles:
-                    await payload.member.remove_roles(role, reason="clicked on emoji", atomic=True)
-
-    @Cog.listener()
-    async def on_raw_reaction_remove(self, payload):
-        if payload.channel_id != self.channel_id:
-            return None
-
-        self.check_if_roles_are_built()
-        emoji = payload.emoji
-        guild = self.bot.get_guild(payload.guild_id)
-        member = guild.get_member(payload.user_id)
-
-        if emoji.name == "1️⃣":
-            await member.remove_roles(self.roles[0], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "2️⃣":
-            await member.remove_roles(self.roles[1], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "3️⃣":
-            await member.remove_roles(self.roles[2], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "4️⃣":
-            await member.remove_roles(self.roles[3], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "5️⃣":
-            await member.remove_roles(self.roles[4], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "6️⃣":
-            await member.remove_roles(self.roles[5], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "7️⃣":
-            await member.remove_roles(self.roles[6], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "8️⃣":
-            await member.remove_roles(self.roles[7], reason="clicked on emoji", atomic=True)
-
-        elif emoji.name == "9️⃣":
-            await member.remove_roles(self.roles[8], reason="clicked on emoji", atomic=True)
-    
     @command(name='ping', help='Shows Ping(ms)')
     async def ping(self, ctx):
         ping = f'{round (self.bot.latency * 1000)} ms :signal_strength::globe_with_meridians: '
